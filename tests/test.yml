@@ -1,5 +1,5 @@
----
-- hosts: localhost
-  remote_user: root
+- name: init cluster
+  hosts: localhost
+  gather_facts: no
   roles:
-    - ansible-role-mongo
+    - role: ansible-role-mongo

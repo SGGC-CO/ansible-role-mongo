@@ -1,5 +1,3 @@
 ---
 # defaults file for ansible-role-mongo
 mongo_path: "{{ lookup('env', 'HOME') }}/mongo"
-mongo_root_username: root
-mongo_root_password: root

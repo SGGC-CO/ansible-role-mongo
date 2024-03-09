@@ -2,7 +2,7 @@
 # tasks file for ansible-role-mongo
 - name: Ensures mongo dir exists
   file:
-    path: "{{ mogno_path }}/mongo"
+    path: "{{ mongo_path }}/mongo"
     state: directory
 
 # @TODO put MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD in a secret file
@@ -14,7 +14,7 @@
     recreate: yes
     command: mongod --replSet rs0 --bind_ip_all
     volumes:
-      - "{{ mogno_path }}/mongo/data:/data"
+      - "{{ mongo_path }}/mongo/data:/data"
     ports:
       - "27017:27017"
     labels:
