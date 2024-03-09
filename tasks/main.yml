@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-role-mongo
+- name: Ensures mongo dir exists
+  file:
+    path: "{{ mogno_path }}/mongo"
+    state: directory
+
+# @TODO put MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD in a secret file
+- name: create mongocb container
+  community.docker.docker_container:
+    name: mongo-container
+    image: mongo:6.0.3
+    restart_policy: unless-stopped
+    recreate: yes
+    command: mongod --replSet rs0 --bind_ip_all
+    volumes:
+      - "{{ mogno_path }}/mongo/data:/data"
+    ports:
+      - "27017:27017"
+    labels:
+      traefik.enable: "false"
+
+- name: init replica set
+  community.docker.docker_container_exec:
+    container: mongo-container
+    command: 'mongosh admin --eval "rs.initiate({ _id: ''rs0'', members: [{ _id: 0, host: ''localhost:27017'' }]})"'
